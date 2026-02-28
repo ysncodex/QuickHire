@@ -1,11 +1,11 @@
 import { useForm } from 'react-hook-form';
 import useJobStore from '../store/useJobStore';
 import { FaTrash, FaPlus } from 'react-icons/fa';
+import { formatDate } from '../utils/formatters.js';
 
 const AdminDashboard = () => {
   const { jobs, addJob, deleteJob } = useJobStore();
 
-  // Setup form validation
   const {
     register,
     handleSubmit,
@@ -14,15 +14,14 @@ const AdminDashboard = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    // Generate a temporary ID and timestamp since we don't have a database yet
     const newJob = {
-      id: crypto.randomUUID(),
+      id: Math.random().toString(36).substring(2, 9),
       created_at: new Date().toISOString(),
       ...data,
     };
 
     addJob(newJob);
-    reset(); // Clear form after submission
+    reset();
   };
 
   return (
@@ -134,7 +133,7 @@ const AdminDashboard = () => {
                       {job.company} • {job.location}
                     </p>
                     <p className="text-xs text-gray-400 mt-1">
-                      Posted: {new Date(job.created_at).toLocaleDateString()}
+                      Posted: {formatDate(job.created_at)}
                     </p>
                   </div>
 

@@ -1,13 +1,10 @@
 import { Link } from 'react-router-dom';
 import { FaMapMarkerAlt, FaBriefcase, FaClock } from 'react-icons/fa';
+import { formatTimeAgo } from '../../utils/formatters.js';
 
 const JobCard = ({ job }) => {
   // Format the date to be more readable
-  const postedDate = new Date(job.created_at).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
+  const postedDate = formatTimeAgo(job.created_at);
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow flex flex-col h-full">
