@@ -9,10 +9,8 @@ const JobDetail = () => {
   const navigate = useNavigate();
   const jobs = useJobStore((state) => state.jobs);
 
-  // Find the specific job based on the URL parameter
   const job = jobs.find((j) => j.id === id);
 
-  // Initialize react-hook-form
   const {
     register,
     handleSubmit,
@@ -21,15 +19,12 @@ const JobDetail = () => {
   } = useForm();
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Handle application submission
   const onSubmit = (data) => {
-    // In a real app, this would be a POST request to /api/applications
     console.log('Application Submitted:', { job_id: id, ...data });
     setIsSubmitted(true);
-    reset(); // Clear the form
+    reset();
   };
 
-  // If the user manually types a bad ID in the URL
   if (!job) {
     return (
       <div className="text-center py-16">
@@ -42,8 +37,7 @@ const JobDetail = () => {
   }
 
   return (
-    <div className="max-w-5xl mx-auto">
-      {/* Back Button */}
+    <div className="w-full">
       <button
         onClick={() => navigate('/')}
         className="flex items-center text-gray-500 hover:text-blue-600 transition-colors mb-6"
@@ -52,7 +46,6 @@ const JobDetail = () => {
       </button>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Column: Job Details */}
         <div className="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200 p-8">
           <div className="mb-6 border-b border-gray-100 pb-6">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">{job.title}</h1>
@@ -76,7 +69,6 @@ const JobDetail = () => {
           </div>
         </div>
 
-        {/* Right Column: Apply Form */}
         <div className="lg:col-span-1">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-24">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Apply Now</h2>
@@ -87,7 +79,6 @@ const JobDetail = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                {/* Name Field */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                   <input
@@ -100,7 +91,6 @@ const JobDetail = () => {
                   )}
                 </div>
 
-                {/* Email Field with Validation */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Email Address
@@ -121,7 +111,6 @@ const JobDetail = () => {
                   )}
                 </div>
 
-                {/* Resume URL Field with Validation */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Resume Link (URL)
@@ -144,7 +133,6 @@ const JobDetail = () => {
                   )}
                 </div>
 
-                {/* Cover Note Field */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Cover Note</label>
                   <textarea
