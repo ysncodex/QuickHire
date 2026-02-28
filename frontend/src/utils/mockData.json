@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "title": "Frontend Developer (React.js)",
+    "company": "Qtec Solution Limited",
+    "location": "Dhaka, Bangladesh",
+    "category": "Engineering",
+    "description": "We are looking for a skilled Frontend Developer proficient in React.js and Tailwind CSS. You will be responsible for building pixel-perfect UIs based on Figma designs, integrating RESTful APIs, and ensuring responsive layouts across all devices. Experience with Next.js is a strong plus.",
+    "created_at": "2026-02-26T09:00:00Z"
+  },
+  {
+    "id": "2",
+    "title": "Full Stack Engineer (MERN)",
+    "company": "InnovateTech BD",
+    "location": "Remote",
+    "category": "Engineering",
+    "description": "Seeking a Full Stack Engineer to build scalable web applications. You will work extensively with MongoDB, Express, React, and Node.js. The ideal candidate has experience building complex systems like ERPs or SaaS platforms and understands state management using tools like Zustand or Redux.",
+    "created_at": "2026-02-25T14:30:00Z"
+  },
+  {
+    "id": "3",
+    "title": "UI/UX Designer",
+    "company": "Creative Space",
+    "location": "Dhaka, Bangladesh",
+    "category": "Design",
+    "description": "We need a creative UI/UX designer to craft intuitive user experiences. You will create wireframes, prototypes, and high-fidelity designs in Figma. Strong understanding of typography, color theory, and modern web design principles is required.",
+    "created_at": "2026-02-27T11:15:00Z"
+  },
+  {
+    "id": "4",
+    "title": "Backend Developer (Node.js)",
+    "company": "Fintech Solutions",
+    "location": "Hybrid",
+    "category": "Engineering",
+    "description": "Join our backend team to develop robust RESTful APIs using Node.js and Express. You will design database schemas in MongoDB/PostgreSQL, implement authentication, and ensure high performance and responsiveness to requests from the frontend.",
+    "created_at": "2026-02-24T08:45:00Z"
+  },
+  {
+    "id": "5",
+    "title": "Product Marketing Manager",
+    "company": "GrowthApp",
+    "location": "Remote",
+    "category": "Marketing",
+    "description": "Looking for a data-driven Product Marketing Manager to lead our go-to-market strategies. You will be responsible for market research, positioning, and working closely with the sales and product teams to drive user acquisition.",
+    "created_at": "2026-02-28T10:00:00Z"
+  }
+]
