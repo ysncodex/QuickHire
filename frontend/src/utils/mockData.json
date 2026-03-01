@@ -43,5 +43,95 @@
     "category": "Marketing",
     "description": "Looking for a data-driven Product Marketing Manager to lead our go-to-market strategies. You will be responsible for market research, positioning, and working closely with the sales and product teams to drive user acquisition.",
     "created_at": "2026-02-28T10:00:00Z"
+  },
+  {
+    "id": "6",
+    "title": "Software Engineer (.NET/C#)",
+    "company": "CSM BD",
+    "location": "Dhaka, Bangladesh",
+    "category": "Engineering",
+    "description": "We are seeking a strong backend engineer focused on the .NET ecosystem. You will build and maintain high-performance APIs using C# and manage complex queries in MSSQL. Familiarity with enterprise-level applications is highly desired.",
+    "created_at": "2026-02-28T14:00:00Z"
+  },
+  {
+    "id": "7",
+    "title": "React Frontend Engineer",
+    "company": "Dointech",
+    "location": "Dhaka, Bangladesh",
+    "category": "Engineering",
+    "description": "Looking for an experienced React developer to take ownership of our client-facing dashboards. You should be highly comfortable with React.js, modern state management (Zustand/Redux), and translating complex data into dynamic reporting systems.",
+    "created_at": "2026-03-01T08:30:00Z"
+  },
+  {
+    "id": "8",
+    "title": "Full Stack Developer (C# & React)",
+    "company": "BiTechX",
+    "location": "Hybrid",
+    "category": "Engineering",
+    "description": "Join our cross-functional team building large-scale SaaS ERP solutions. The ideal candidate can seamlessly jump between a React frontend and a .NET/MSSQL backend, ensuring data integrity and smooth user experiences across complex modules like HR and inventory.",
+    "created_at": "2026-02-27T16:45:00Z"
+  },
+  {
+    "id": "9",
+    "title": "E-Commerce Platform Developer",
+    "company": "RetailTech Partners",
+    "location": "Remote",
+    "category": "Engineering",
+    "description": "We need a full-stack developer to help scale our multi-vendor e-commerce platform. Experience with the MERN stack is required, along with a solid understanding of payment gateway integrations and real-time database updates using Firebase or similar technologies.",
+    "created_at": "2026-02-26T10:20:00Z"
+  },
+  {
+    "id": "10",
+    "title": "Database Administrator",
+    "company": "DataXpie",
+    "location": "Dhaka, Bangladesh",
+    "category": "Data",
+    "description": "Seeking a DBA to manage, optimize, and secure our core databases. Expertise in MySQL and MSSQL is mandatory. Experience implementing caching layers using Redis to improve query performance is a strong advantage.",
+    "created_at": "2026-02-25T09:15:00Z"
+  },
+  {
+    "id": "11",
+    "title": "Software Engineer (ERP Systems)",
+    "company": "Cultive8 Technologies",
+    "location": "Dhaka, Bangladesh",
+    "category": "Engineering",
+    "description": "We are expanding our engineering team to build custom ERP modules for corporate clients. You will work on full-stack development, focusing on attendance, employee management, and customized data reporting. Strong JavaScript and API design skills needed.",
+    "created_at": "2026-03-01T11:00:00Z"
+  },
+  {
+    "id": "12",
+    "title": "Systems Analyst",
+    "company": "NTMC",
+    "location": "Dhaka, Bangladesh",
+    "category": "IT & Systems",
+    "description": "Looking for a methodical Systems Analyst to bridge the gap between business requirements and technical execution. You will analyze existing corporate workflows and architect technical solutions for large-scale system deployments.",
+    "created_at": "2026-02-24T13:00:00Z"
+  },
+  {
+    "id": "13",
+    "title": "Frontend Architect (TypeScript/React)",
+    "company": "Global Dev Hub",
+    "location": "Remote",
+    "category": "Engineering",
+    "description": "Take the lead on our frontend architecture. We need a specialist in React, TypeScript, and Tailwind CSS. You will set the standard for component reusability, manage complex application state, and mentor junior developers.",
+    "created_at": "2026-02-28T15:30:00Z"
+  },
+  {
+    "id": "14",
+    "title": "Quality Assurance Engineer",
+    "company": "BugFree Solutions",
+    "location": "Hybrid",
+    "category": "QA",
+    "description": "Seeking a detail-oriented QA Engineer to handle both manual and automated testing. You will write test cases, automate API testing via Postman, and ensure all web application releases meet our high-quality standards.",
+    "created_at": "2026-02-27T09:45:00Z"
+  },
+  {
+    "id": "15",
+    "title": "Backend Developer (.NET Core)",
+    "company": "Enterprise Software Ltd",
+    "location": "Remote",
+    "category": "Engineering",
+    "description": "We are looking for a backend specialist to build microservices using .NET Core. You will be dealing with heavy data loads, requiring deep knowledge of SQL optimization, secure REST API development, and distributed system design.",
+    "created_at": "2026-03-01T10:00:00Z"
   }
 ]
