@@ -2,11 +2,13 @@
 
 const CompaniesSection = () => {
   return (
-    <section className="py-6 border-b border-gray-100 pb-12 w-full z-10 relative">
-      <div className="max-w-6xl mx-auto px-4 lg:px-0">
+    <section className="py-6 border-b border-gray-100 pb-12 w-full max-w-[90%] mx-auto z-10 relative">
+      <div>
         <p className="text-gray-400 font-medium mb-8 text-center lg:text-left">
           Companies we helped grow
         </p>
+      </div>
+      <div className="max-w-6xl mx-auto px-4 lg:px-0">
         <div className="flex flex-wrap justify-center items-center gap-12 lg:gap-20 opacity-60 grayscale hover:grayscale-0 transition-all duration-300">
           <span className="text-2xl font-bold tracking-tighter text-gray-600">vodafone</span>
           <span className="text-3xl font-bold text-gray-600">intel</span>

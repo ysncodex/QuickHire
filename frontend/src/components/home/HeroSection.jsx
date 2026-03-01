@@ -1,11 +1,10 @@
-// Location: src/components/home/HeroSection.jsx
 import { useState, useRef, useEffect } from 'react';
 import useJobStore from '../../store/useJobStore';
 import Button from '../common/Button';
 import { FaSearch, FaMapMarkerAlt, FaChevronDown } from 'react-icons/fa';
+import HeroImage from '../../assets/hero.webp';
 
 const HeroSection = () => {
-  // Grab state directly from Zustand
   const { jobs, searchQuery, filterLocation, setSearchQuery, setFilterLocation } = useJobStore();
 
   const [isLocationOpen, setIsLocationOpen] = useState(false);
@@ -25,11 +24,9 @@ const HeroSection = () => {
 
   return (
     <section className="w-full max-w-[90%] mx-auto bg-[#fcfdff] rounded-2xl p-8 lg:p-12 border border-gray-100 shadow-sm relative overflow-visible flex flex-col lg:flex-row items-center justify-between gap-8 z-20">
-      {/* Decorative Background Lines */}
       <div className="absolute top-0 right-1/4 w-[500px] h-[500px] border-[0.5px] border-indigo-100 rounded-full rotate-45 pointer-events-none opacity-50 z-0"></div>
       <div className="absolute -top-20 right-10 w-[600px] h-[600px] border-[0.5px] border-indigo-50 rounded-full rotate-45 pointer-events-none opacity-50 z-0"></div>
 
-      {/* Left Side: Text and Search */}
       <div className="w-full lg:w-1/2 z-10 space-y-6">
         <h1 className="text-5xl lg:text-6xl font-extrabold text-[#111827] leading-tight tracking-tight">
           Discover <br /> more than <br />
@@ -44,7 +41,6 @@ const HeroSection = () => {
           about startups.
         </p>
 
-        {/* Custom Search Bar */}
         <div className="bg-white p-2 rounded-lg shadow-lg border border-gray-100 flex flex-col md:flex-row items-center gap-2 max-w-2xl mt-8 relative z-30">
           <div className="flex-1 flex items-center px-4 w-full">
             <FaSearch className="text-gray-400 mr-3 shrink-0" />
@@ -112,10 +108,9 @@ const HeroSection = () => {
         </p>
       </div>
 
-      {/* Right Side: Image */}
       <div className="w-full lg:w-1/2 z-10 flex justify-center lg:justify-end">
         <img
-          src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=600&h=600"
+          src={HeroImage}
           alt="Happy job seeker pointing"
           className="w-full max-w-md object-contain drop-shadow-2xl rounded-b-full pointer-events-none"
         />

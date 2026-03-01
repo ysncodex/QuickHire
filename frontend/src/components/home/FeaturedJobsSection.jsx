@@ -1,23 +1,29 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa';
-import LatestJobCard from '../job/LatestJobCard';
+import JobCard from '../job/JobCard';
 import useJobStore from '../../store/useJobStore';
 
-const LatestJobsSection = ({ filteredJobs }) => {
+const FeaturedJobsSection = ({ filteredJobs }) => {
   const { setSearchQuery, setFilterLocation } = useJobStore();
 
-  const latestEightJobs = useMemo(() => {
-    return [...filteredJobs]
-      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-      .slice(0, 8);
+  const dailyFeaturedJobs = useMemo(() => {
+    if (filteredJobs.length <= 6) return filteredJobs;
+
+    const currentDay = new Date().getDate();
+
+    const startIndex = currentDay % filteredJobs.length;
+
+    const rotatedJobs = [...filteredJobs.slice(startIndex), ...filteredJobs.slice(0, startIndex)];
+
+    return rotatedJobs.slice(0, 6);
   }, [filteredJobs]);
 
   return (
-    <section className="relative z-10 w-full max-w-[90%] mx-auto px-4 lg:px-0">
+    <section className="w-full max-w-[90%] mx-auto relative z-10 px-4 lg:px-0">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8">
         <h2 className="text-4xl lg:text-5xl font-extrabold text-[#1f2937] tracking-tight">
-          Latest <span className="text-[#38bdf8]">jobs open</span>
+          Featured <span className="text-[#38bdf8]">jobs</span>
         </h2>
         <Link
           to="/job-listings"
@@ -27,14 +33,14 @@ const LatestJobsSection = ({ filteredJobs }) => {
         </Link>
       </div>
 
-      {latestEightJobs.length > 0 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {latestEightJobs.map((job) => (
-            <LatestJobCard key={job.id} job={job} />
+      {dailyFeaturedJobs.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {dailyFeaturedJobs.map((job) => (
+            <JobCard key={job.id} job={job} />
           ))}
         </div>
       ) : (
-        <div className="text-center py-12 bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="text-center py-12 bg-white rounded-lg border border-gray-200 shadow-sm">
           <p className="text-gray-500 text-lg">No jobs found matching your criteria.</p>
           <button
             onClick={() => {
@@ -51,4 +57,4 @@ const LatestJobsSection = ({ filteredJobs }) => {
   );
 };
 
-export default LatestJobsSection;
+export default FeaturedJobsSection;

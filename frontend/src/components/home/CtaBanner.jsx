@@ -15,7 +15,7 @@ const CtaBanner = () => {
           <p className="text-indigo-100 text-lg font-medium">Start posting jobs for only $10.</p>
           <div className="pt-2">
             <Link
-              to="/admin"
+              to="/signup"
               className="inline-block bg-white text-indigo-600 font-bold px-8 py-3 rounded-md hover:bg-gray-50 transition-colors shadow-lg"
             >
               Sign Up For Free

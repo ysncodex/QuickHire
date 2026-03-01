@@ -26,7 +26,7 @@ const ExploreByCategory = () => {
         </h2>
 
         <Link
-          to="/"
+          to="/job-listings"
           className="text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-2 transition-colors mb-1"
         >
           Show all jobs <FaArrowRight className="text-sm" />
