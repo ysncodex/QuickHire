@@ -1,10 +1,13 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useJobStore from '../store/useJobStore';
-import { FaTrash, FaPlus } from 'react-icons/fa';
+import { FaTrash, FaPlus, FaExclamationTriangle } from 'react-icons/fa';
 import { formatDate } from '../utils/formatters.js';
 
 const AdminDashboard = () => {
   const { jobs, addJob, deleteJob } = useJobStore();
+
+  const [jobToDelete, setJobToDelete] = useState(null);
 
   const {
     register,
@@ -15,7 +18,7 @@ const AdminDashboard = () => {
 
   const onSubmit = (data) => {
     const newJob = {
-      id: Math.random().toString(36).substring(2, 9),
+      id: crypto.randomUUID(),
       created_at: new Date().toISOString(),
       ...data,
     };
@@ -24,8 +27,15 @@ const AdminDashboard = () => {
     reset();
   };
 
+  const confirmDelete = () => {
+    if (jobToDelete) {
+      deleteJob(jobToDelete);
+      setJobToDelete(null);
+    }
+  };
+
   return (
-    <div className="w-full">
+    <div className="w-full max-w-7xl mx-auto px-4 lg:px-0 py-8 relative">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
         <p className="text-gray-500 mt-2">Manage job postings and applications.</p>
@@ -136,8 +146,8 @@ const AdminDashboard = () => {
                   </div>
 
                   <button
-                    onClick={() => deleteJob(job.id)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors"
+                    onClick={() => setJobToDelete(job.id)}
+                    className="p-3 text-red-500 hover:bg-red-50 hover:text-red-700 rounded-md transition-all"
                     title="Delete Job"
                   >
                     <FaTrash />
@@ -148,6 +158,37 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
+
+      {jobToDelete && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 px-4 transition-opacity">
+          <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-sm transform transition-all">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-4 text-xl">
+                <FaExclamationTriangle />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Delete Job Posting?</h3>
+              <p className="text-sm text-gray-500 mb-6">
+                Are you sure you want to delete this job? This action cannot be undone.
+              </p>
+
+              <div className="flex w-full gap-3">
+                <button
+                  onClick={() => setJobToDelete(null)}
+                  className="flex-1 py-2.5 px-4 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="flex-1 py-2.5 px-4 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors"
+                >
+                  Yes, Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
