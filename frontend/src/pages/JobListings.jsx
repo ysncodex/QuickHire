@@ -2,15 +2,24 @@ import { useMemo, useState, useRef, useEffect } from 'react';
 import useJobStore from '../store/useJobStore';
 import JobCard from '../components/job/JobCard';
 import Button from '../components/common/Button';
-import { FaSearch, FaMapMarkerAlt, FaChevronDown, FaBriefcase } from 'react-icons/fa';
+import {
+  FaSearch,
+  FaMapMarkerAlt,
+  FaChevronDown,
+  FaBriefcase,
+  FaChevronLeft,
+  FaChevronRight,
+} from 'react-icons/fa';
 
 const JobListings = () => {
   const { jobs, searchQuery, filterLocation, setSearchQuery, setFilterLocation } = useJobStore();
 
   const [filterCategory, setFilterCategory] = useState('');
-
   const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 6;
 
   const locationRef = useRef(null);
   const categoryRef = useRef(null);
@@ -44,6 +53,74 @@ const JobListings = () => {
     });
   }, [jobs, searchQuery, filterLocation, filterCategory]);
 
+  const totalPages = Math.ceil(filteredJobs.length / jobsPerPage) || 1;
+  const validPage = Math.min(currentPage, totalPages);
+
+  const indexOfLastJob = validPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
+
+  const renderPagination = () => {
+    const pages = [];
+
+    const PageButton = ({ pageNum, text }) => {
+      const isActive = validPage === pageNum;
+      return (
+        <button
+          key={`page-${pageNum}-${text || pageNum}`}
+          onClick={() => {
+            setCurrentPage(pageNum);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`min-w-[36px] h-9 px-2 flex items-center justify-center rounded-lg text-sm font-bold transition-colors ${
+            isActive
+              ? 'bg-indigo-600 text-white shadow-md'
+              : 'text-slate-700 hover:bg-indigo-50 hover:text-indigo-700'
+          }`}
+        >
+          {text || pageNum}
+        </button>
+      );
+    };
+
+    const Ellipsis = ({ keyId }) => (
+      <span
+        key={keyId}
+        className="px-1 text-slate-700 font-bold tracking-widest flex items-center justify-center"
+      >
+        ...
+      </span>
+    );
+
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(<PageButton key={i} pageNum={i} />);
+      }
+    } else if (validPage <= 3) {
+      for (let i = 1; i <= 4; i++) {
+        pages.push(<PageButton key={i} pageNum={i} />);
+      }
+      pages.push(<Ellipsis key="ellipsis-end" keyId="end" />);
+      pages.push(<PageButton key="last" pageNum={totalPages} text="Last" />);
+    } else if (validPage >= totalPages - 2) {
+      pages.push(<PageButton key="first" pageNum={1} text="First" />);
+      pages.push(<Ellipsis key="ellipsis-start" keyId="start" />);
+      for (let i = totalPages - 3; i <= totalPages; i++) {
+        pages.push(<PageButton key={i} pageNum={i} />);
+      }
+    } else {
+      pages.push(<PageButton key="first" pageNum={1} text="First" />);
+      pages.push(<Ellipsis key="ellipsis-start" keyId="start" />);
+      for (let i = validPage - 1; i <= validPage + 1; i++) {
+        pages.push(<PageButton key={i} pageNum={i} />);
+      }
+      pages.push(<Ellipsis key="ellipsis-end" keyId="end" />);
+      pages.push(<PageButton key="last" pageNum={totalPages} text="Last" />);
+    }
+
+    return pages;
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 lg:px-0 py-12 space-y-12">
       <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
@@ -60,7 +137,10 @@ const JobListings = () => {
               placeholder="Job title or company"
               className="w-full bg-transparent border-none outline-none focus:outline-none ring-0 focus:ring-0 text-gray-700 placeholder-gray-400"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setCurrentPage(1);
+              }}
             />
           </div>
 
@@ -90,6 +170,7 @@ const JobListings = () => {
                   onClick={() => {
                     setFilterCategory('');
                     setIsCategoryOpen(false);
+                    setCurrentPage(1);
                   }}
                 >
                   All Categories
@@ -101,6 +182,7 @@ const JobListings = () => {
                     onClick={() => {
                       setFilterCategory(cat);
                       setIsCategoryOpen(false);
+                      setCurrentPage(1);
                     }}
                   >
                     {cat}
@@ -136,6 +218,7 @@ const JobListings = () => {
                   onClick={() => {
                     setFilterLocation('');
                     setIsLocationOpen(false);
+                    setCurrentPage(1);
                   }}
                 >
                   All Locations
@@ -147,6 +230,7 @@ const JobListings = () => {
                     onClick={() => {
                       setFilterLocation(loc);
                       setIsLocationOpen(false);
+                      setCurrentPage(1);
                     }}
                   >
                     {loc}
@@ -166,11 +250,51 @@ const JobListings = () => {
         </div>
 
         {filteredJobs.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredJobs.map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {currentJobs.map((job) => (
+                <JobCard key={job.id} job={job} />
+              ))}
+            </div>
+
+            {filteredJobs.length > jobsPerPage && (
+              <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between pt-10 mt-6 gap-4 sm:gap-0">
+                <p className="text-xs sm:text-sm text-gray-500 font-medium text-center sm:text-left">
+                  Showing <span className="font-bold text-gray-900">{indexOfFirstJob + 1}</span> to{' '}
+                  <span className="font-bold text-gray-900">
+                    {Math.min(indexOfLastJob, filteredJobs.length)}
+                  </span>{' '}
+                  of <span className="font-bold text-gray-900">{filteredJobs.length}</span> results
+                </p>
+
+                <div className="flex items-center space-x-2 overflow-x-auto max-w-full pb-1 sm:pb-0 custom-scrollbar">
+                  <button
+                    onClick={() => {
+                      setCurrentPage((prev) => Math.max(prev - 1, 1));
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    disabled={validPage === 1}
+                    className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-400 hover:bg-gray-50 hover:text-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shrink-0"
+                  >
+                    <FaChevronLeft className="text-sm" />
+                  </button>
+
+                  {renderPagination()}
+
+                  <button
+                    onClick={() => {
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    disabled={validPage === totalPages}
+                    className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-400 hover:bg-gray-50 hover:text-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shrink-0"
+                  >
+                    <FaChevronRight className="text-sm" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           <div className="text-center py-16 bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col items-center">
             <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
@@ -186,6 +310,7 @@ const JobListings = () => {
                 setSearchQuery('');
                 setFilterLocation('');
                 setFilterCategory('');
+                setCurrentPage(1);
               }}
               className="font-medium"
             >

@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
 const Modal = ({ isOpen, onClose, title, children }) => {
-  // Prevent scrolling on the background body when the modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
