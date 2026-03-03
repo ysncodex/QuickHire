@@ -3,7 +3,6 @@ import { FaMapMarkerAlt, FaBriefcase, FaClock } from 'react-icons/fa';
 import { formatTimeAgo } from '../../utils/formatters.js';
 
 const JobCard = ({ job }) => {
-  // Format the date to be more readable
   const postedDate = formatTimeAgo(job.created_at);
 
   return (

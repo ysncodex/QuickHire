@@ -1,15 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import useJobStore from '../store/useJobStore';
-import { FaMapMarkerAlt, FaBriefcase, FaArrowLeft } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaBriefcase, FaArrowLeft, FaLayerGroup, FaClock } from 'react-icons/fa';
+import { submitApplicationAPI, fetchJobByIdAPI } from '../services/api.js';
 
 const JobDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const jobs = useJobStore((state) => state.jobs);
 
-  const job = jobs.find((j) => j.id === id);
+  const [job, setJob] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const {
     register,
@@ -17,19 +19,53 @@ const JobDetail = () => {
     formState: { errors },
     reset,
   } = useForm();
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const onSubmit = (data) => {
-    console.log('Application Submitted:', { job_id: id, ...data });
-    setIsSubmitted(true);
-    reset();
+  useEffect(() => {
+    const loadJob = async () => {
+      try {
+        setIsLoading(true);
+        const fetchedJob = await fetchJobByIdAPI(id);
+        setJob(fetchedJob);
+      } catch (err) {
+        console.error('Error loading job:', err);
+        setError('Job not found or has been removed.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadJob();
+  }, [id]);
+
+  const onSubmit = async (data) => {
+    try {
+      const payload = {
+        job_id: job.id,
+        ...data,
+      };
+
+      await submitApplicationAPI(payload);
+
+      setIsSubmitted(true);
+      reset();
+    } catch (error) {
+      alert('Failed to submit application. Please check your connection and try again.', error);
+    }
   };
 
-  if (!job) {
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center py-20 w-full">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error || !job) {
     return (
       <div className="text-center py-16">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Job Not Found</h2>
-        <Link to="/" className="text-blue-600 hover:underline">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">{error || 'Job Not Found'}</h2>
+        <Link to="/" className="text-blue-600 hover:underline font-medium">
           Return to Job Listings
         </Link>
       </div>
@@ -37,10 +73,10 @@ const JobDetail = () => {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full max-w-6xl mx-auto px-4 lg:px-0 py-8">
       <button
         onClick={() => navigate('/')}
-        className="flex items-center text-gray-500 hover:text-blue-600 transition-colors mb-6"
+        className="flex items-center text-gray-500 hover:text-blue-600 transition-colors mb-6 font-medium"
       >
         <FaArrowLeft className="mr-2" /> Back to Jobs
       </button>
@@ -49,21 +85,27 @@ const JobDetail = () => {
         <div className="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200 p-8">
           <div className="mb-6 border-b border-gray-100 pb-6">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">{job.title}</h1>
-            <p className="text-xl text-gray-600 mb-4">{job.company}</p>
+            <p className="text-xl text-gray-600 mb-4 font-medium">{job.company}</p>
 
-            <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-              <span className="flex items-center bg-gray-100 px-3 py-1 rounded-full">
-                <FaMapMarkerAlt className="mr-2 text-gray-400" /> {job.location}
+            <div className="flex flex-wrap gap-4 text-sm text-gray-500 font-medium">
+              <span className="flex items-center bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full">
+                <FaMapMarkerAlt className="mr-2 text-indigo-400" /> {job.location}
               </span>
-              <span className="flex items-center bg-gray-100 px-3 py-1 rounded-full">
-                <FaBriefcase className="mr-2 text-gray-400" /> {job.category}
+              <span className="flex items-center bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full">
+                <FaBriefcase className="mr-2 text-indigo-400" /> {job.category}
+              </span>
+              <span className="flex items-center bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full">
+                <FaLayerGroup className="mr-2 text-indigo-400" /> {job.level}
+              </span>
+              <span className="flex items-center bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full">
+                <FaClock className="mr-2 text-indigo-400" /> {job.type}
               </span>
             </div>
           </div>
 
           <div>
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Job Description</h2>
-            <div className="prose max-w-none text-gray-600 whitespace-pre-line">
+            <div className="prose max-w-none text-gray-600 whitespace-pre-line leading-relaxed">
               {job.description}
             </div>
           </div>
@@ -74,8 +116,24 @@ const JobDetail = () => {
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Apply Now</h2>
 
             {isSubmitted ? (
-              <div className="bg-green-50 border border-green-200 text-green-700 p-4 rounded-md">
-                <p className="font-medium text-center">Application submitted successfully!</p>
+              <div className="bg-green-50 border border-green-200 text-green-700 p-6 rounded-lg text-center shadow-sm">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <svg
+                    className="w-6 h-6 text-green-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 className="font-bold text-lg mb-1">Application Sent!</h3>
+                <p className="text-sm">The employer will review your profile shortly.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -122,7 +180,7 @@ const JobDetail = () => {
                       required: 'Resume link is required',
                       pattern: {
                         value:
-                          /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&=]*)$/,
+                          /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/,
                         message: 'Must be a valid URL starting with http:// or https://',
                       },
                     })}
@@ -147,7 +205,7 @@ const JobDetail = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition-colors"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors shadow-sm"
                 >
                   Submit Application
                 </button>

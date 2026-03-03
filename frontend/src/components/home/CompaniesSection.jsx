@@ -1,5 +1,3 @@
-// Location: src/components/home/CompaniesSection.jsx
-
 const CompaniesSection = () => {
   return (
     <section className="py-6 border-b border-gray-100 pb-12 w-full max-w-[90%] mx-auto z-10 relative">

@@ -28,13 +28,13 @@ const LatestJobCard = ({ job }) => {
 
           <div className="flex flex-wrap gap-3">
             <span className="px-3 py-1 text-xs font-bold text-emerald-500 border border-emerald-200 rounded-full bg-white">
-              {job.type || 'Full-Time'}
+              {job.type}
             </span>
             <span className="px-3 py-1 text-xs font-bold text-orange-400 border border-orange-200 rounded-full bg-white">
-              {job.category || 'General'}
+              {job.category}
             </span>
             <span className="px-3 py-1 text-xs font-bold text-indigo-500 border border-indigo-200 rounded-full bg-white">
-              {job.level || 'Mid-Level'}
+              {job.level}
             </span>
           </div>
         </div>
