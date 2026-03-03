@@ -12,8 +12,6 @@ const Login = () => {
 
   const onSubmit = (data) => {
     console.log('Login Data:', data);
-    // TODO: Connect this to the Node.js/Express backend later
-    // For now, let's just redirect to the home page or admin panel
     navigate('/');
   };
 

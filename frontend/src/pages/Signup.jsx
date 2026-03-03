@@ -12,7 +12,6 @@ const Signup = () => {
 
   const onSubmit = (data) => {
     console.log('Signup Data:', data);
-    // TODO: Connect this to the Node.js/Express backend later
     navigate('/login');
   };
 

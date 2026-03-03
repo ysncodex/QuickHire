@@ -1,28 +1,54 @@
 import { create } from 'zustand';
-import mockJobs from '../utils/mockData.json';
+import { fetchJobsAPI, createJobAPI, deleteJobAPI } from '../services/api';
 
 const useJobStore = create((set) => ({
-  // Initial State loaded directly from your mock data
-  jobs: mockJobs,
+  jobs: [],
   searchQuery: '',
-  filterCategory: '',
   filterLocation: '',
+  isLoading: false,
+  error: null,
 
-  // Actions to update the search/filter state from the UI
   setSearchQuery: (query) => set({ searchQuery: query }),
-  setFilterCategory: (category) => set({ filterCategory: category }),
   setFilterLocation: (location) => set({ filterLocation: location }),
 
-  // Admin Actions to manipulate the data
-  addJob: (newJob) =>
-    set((state) => ({
-      jobs: [newJob, ...state.jobs],
-    })),
+  // 1. Fetch all jobs from MongoDB
+  fetchJobs: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const data = await fetchJobsAPI();
+      set({ jobs: data, isLoading: false });
+    } catch (error) {
+      set({ error: error.message || 'Failed to fetch jobs', isLoading: false });
+    }
+  },
 
-  deleteJob: (id) =>
-    set((state) => ({
-      jobs: state.jobs.filter((job) => job.id !== id),
-    })),
+  // 2. Add a new job to MongoDB
+  addJob: async (jobData) => {
+    set({ isLoading: true, error: null });
+    try {
+      const newJob = await createJobAPI(jobData);
+      set((state) => ({
+        jobs: [newJob, ...state.jobs],
+        isLoading: false,
+      }));
+    } catch (error) {
+      set({ error: error.message || 'Failed to add job', isLoading: false });
+      throw error;
+    }
+  },
+
+  // 3. Delete a job from MongoDB
+  deleteJob: async (id) => {
+    try {
+      await deleteJobAPI(id);
+      set((state) => ({
+        jobs: state.jobs.filter((job) => job.id !== id),
+      }));
+    } catch (error) {
+      set({ error: error.message || 'Failed to delete job' });
+      console.error(error);
+    }
+  },
 }));
 
 export default useJobStore;

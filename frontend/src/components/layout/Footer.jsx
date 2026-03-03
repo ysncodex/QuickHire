@@ -5,9 +5,7 @@ const Footer = () => {
   return (
     <footer className="w-full bg-[#1b1f2e] text-gray-400 py-16 mt-auto">
       <div className="w-full max-w-[90%] mx-auto px-4 lg:px-0">
-        {/* TOP SECTION: 4-Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 mb-16">
-          {/* Column 1: Brand & Description (Takes up 4 columns) */}
           <div className="lg:col-span-4 pr-4">
             <Link to="/" className="flex items-center gap-2 mb-6">
               <svg
@@ -28,7 +26,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Column 2: About Links (Takes up 2 columns) */}
           <div className="lg:col-span-2">
             <h3 className="text-white font-semibold mb-6">About</h3>
             <ul className="space-y-4">
@@ -60,7 +57,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 3: Resources Links (Takes up 2 columns) */}
           <div className="lg:col-span-2">
             <h3 className="text-white font-semibold mb-6">Resources</h3>
             <ul className="space-y-4">
@@ -87,7 +83,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 4: Newsletter Subscription (Takes up 4 columns) */}
           <div className="lg:col-span-4">
             <h3 className="text-white font-semibold mb-6">Get job notifications</h3>
             <p className="text-gray-400 mb-6 max-w-sm">
@@ -110,14 +105,12 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* BOTTOM SECTION: Divider & Copyright */}
         <div className="pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-gray-500 text-sm">
             {new Date().getFullYear()} @ QuickHire. All rights reserved. Task for Qtec Solution
             Limited.
           </p>
 
-          {/* Social Icons */}
           <div className="flex items-center gap-4">
             <a
               href="#"

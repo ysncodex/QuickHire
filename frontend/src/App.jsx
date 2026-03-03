@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import useJobStore from './store/useJobStore';
+
 import Layout from './components/layout/Layout';
 import JobListings from './pages/JobListings';
 import JobDetail from './pages/JobDetail';
@@ -9,6 +12,12 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 
 function App() {
+  const { fetchJobs } = useJobStore();
+
+  useEffect(() => {
+    fetchJobs();
+  }, [fetchJobs]);
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
